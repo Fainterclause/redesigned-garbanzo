@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Jesus way Library— Where Stories Live</title>
+<link rel="icon" href="data:,">
+<style>
+  :root{
+    --burgundy:#6b1f2a;
+    --burgundy-dark:#4a141c;
+    --cream:#f8f1e4;
+    --cream-dark:#ead9bf;
+    --gold:#c9a24b;
+    --ink:#2b2118;
+    --muted:#6b5d4f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Georgia',serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.6;
+  }
+  h1,h2,h3{font-family:'Playfair Display','Georgia',serif;font-weight:700}
+  a{color:inherit;text-decoration:none}
+
+  /* NAV */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:var(--burgundy);
+    color:var(--cream);
+    padding:1rem 2rem;
+    display:flex;justify-content:space-between;align-items:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+  }
+  .logo{font-size:1.5rem;font-weight:bold;letter-spacing:1px}
+  .logo span{color:var(--gold)}
+  nav ul{display:flex;gap:2rem;list-style:none}
+  nav ul a:hover{color:var(--gold)}
+  .nav-btn{
+    background:var(--gold);color:var(--burgundy-dark);
+    padding:.5rem 1.2rem;border-radius:4px;font-weight:bold;
+    transition:transform .2s;
+  }
+  .nav-btn:hover{transform:translateY(-2px)}
+
+  /* HERO */
+  .hero{
+    background:linear-gradient(135deg,var(--burgundy) 0%,var(--burgundy-dark) 100%);
+    color:var(--cream);
+    padding:5rem 2rem;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"📖";
+    position:absolute;
+    font-size:20rem;
+    opacity:.05;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+  }
+  .hero h1{font-size:3rem;margin-bottom:1rem;position:relative}
+  .hero p{font-size:1.2rem;max-width:600px;margin:0 auto 2rem;opacity:.9;position:relative}
+  .search-box{
+    max-width:600px;margin:0 auto;
+    display:flex;
+    background:var(--cream);
+    border-radius:50px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+    position:relative;
+  }
+  .search-box input{
+    flex:1;padding:1rem 1.5rem;border:none;outline:none;
+    font-size:1rem;font-family:inherit;
+  }
+  .search-box button{
+    background:var(--gold);border:none;padding:0 2rem;
+    font-weight:bold;cursor:pointer;font-family:inherit;
+  }
+
+  /* SECTIONS */
+  section{padding:4rem 2rem;max-width:1200px;margin:0 auto}
+  .section-title{
+    text-align:center;font-size:2.2rem;color:var(--burgundy);
+    margin-bottom:.5rem;
+  }
+  .section-subtitle{
+    text-align:center;color:var(--muted);margin-bottom:3rem;
+    font-style:italic;
+  }
+
+  /* CATEGORIES */
+  .categories{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:1.5rem;
+  }
+  .category{
+    background:white;
+    padding:2rem 1rem;
+    text-align:center;
+    border-radius:8px;
+    cursor:pointer;
+    transition:all .3s;
+    border:2px solid transparent;
+  }
+  .category:hover{
+    transform:translateY(-5px);
+    border-color:var(--gold);
+    box-shadow:0 10px 25px rgba(107,31,42,.15);
+  }
+  .category .icon{font-size:2.5rem;margin-bottom:.5rem}
+  .category h3{color:var(--burgundy);font-size:1.1rem}
+  .category p{color:var(--muted);font-size:.9rem}
+
+  /* BOOKS */
+  .filters{
+    display:flex;gap:.5rem;justify-content:center;
+    margin-bottom:2rem;flex-wrap:wrap;
+  }
+  .filter-btn{
+    background:white;border:2px solid var(--burgundy);
+    color:var(--burgundy);padding:.5rem 1.2rem;border-radius:20px;
+    cursor:pointer;font-family:inherit;transition:all .2s;
+  }
+  .filter-btn.active,.filter-btn:hover{
+    background:var(--burgundy);color:var(--cream);
+  }
+  .books{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+    gap:2rem;
+  }
+  .book{
+    background:white;
+    border-radius:8px;
+    overflow:hidden;
+    cursor:pointer;
+    transition:transform .3s;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+  }
+  .book:hover{transform:translateY(-8px)}
+  .book-cover{
+    height:260px;
+    display:flex;align-items:center;justify-content:center;
+    padding:1.5rem;text-align:center;
+    color:white;font-weight:bold;
+    font-family:'Playfair Display',serif;
+    font-size:1.1rem;
+    position:relative;
+  }
+  .book-cover::after{
+    content:"";position:absolute;left:8px;top:0;bottom:0;width:3px;
+    background:rgba(0,0,0,.2);
+  }
+  .book-info{padding:1rem}
+  .book-info h3{font-size:1rem;color:var(--burgundy);margin-bottom:.3rem}
+  .book-info .author{color:var(--muted);font-size:.9rem;font-style:italic}
+  .book-info .status{
+    display:inline-block;margin-top:.5rem;
+    font-size:.8rem;padding:.2rem .6rem;border-radius:10px;
+  }
+  .status.available{background:#d4edda;color:#155724}
+  .status.borrowed{background:#f8d7da;color:#721c24}
+
+  /* EVENTS */
+  .events-section{background:var(--cream-dark);margin:0;max-width:none}
+  .events-wrap{max-width:1200px;margin:0 auto}
+  .events{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:1.5rem;
+  }
+  .event{
+    background:white;padding:1.5rem;border-radius:8px;
+    border-left:4px solid var(--gold);
+  }
+  .event-date{
+    color:var(--gold);font-weight:bold;font-size:.9rem;
+    text-transform:uppercase;letter-spacing:1px;
+  }
+  .event h3{color:var(--burgundy);margin:.5rem 0}
+  .event p{color:var(--muted);font-size:.95rem}
+
+  /* CTA */
+  .cta{
+    background:var(--burgundy);color:var(--cream);
+    text-align:center;padding:4rem 2rem;
+  }
+  .cta h2{font-size:2rem;margin-bottom:1rem}
+  .cta p{margin-bottom:2rem;opacity:.9}
+  .cta button{
+    background:var(--gold);color:var(--burgundy-dark);
+    padding:.8rem 2rem;border:none;border-radius:4px;
+    font-weight:bold;font-size:1rem;cursor:pointer;
+    font-family:inherit;
+  }
+
+  /* FOOTER */
+  footer{
+    background:var(--burgundy-dark);color:var(--cream);
+    padding:3rem 2rem 1rem;
+  }
+  .footer-grid{
+    max-width:1200px;margin:0 auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:2rem;
+  }
+  footer h4{color:var(--gold);margin-bottom:1rem}
+  footer ul{list-style:none}
+  footer ul li{margin-bottom:.5rem;opacity:.85}
+  footer ul li:hover{color:var(--gold);cursor:pointer}
+  .copyright{
+    text-align:center;margin-top:2rem;padding-top:1.5rem;
+    border-top:1px solid rgba(255,255,255,.15);
+    opacity:.7;font-size:.9rem;
+  }
+
+  /* MODAL */
+  .modal{
+    display:none;position:fixed;inset:0;
+    background:rgba(0,0,0,.7);z-index:100;
+    align-items:center;justify-content:center;padding:1rem;
+  }
+  .modal.open{display:flex}
+  .modal-content{
+    background:var(--cream);max-width:500px;width:100%;
+    border-radius:10px;overflow:hidden;
+    animation:pop .3s ease;
+  }
+  @keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+  .modal-cover{height:180px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.5rem;font-weight:bold;text-align:center;padding:1rem}
+  .modal-body{padding:2rem}
+  .modal-body h2{color:var(--burgundy);margin-bottom:.5rem}
+  .modal-body .author{font-style:italic;color:var(--muted);margin-bottom:1rem}
+  .modal-body p{margin-bottom:1.5rem}
+  .modal-actions{display:flex;gap:.5rem}
+  .modal-actions button{
+    flex:1;padding:.7rem;border:none;border-radius:4px;
+    cursor:pointer;font-family:inherit;font-weight:bold;
+  }
+  .btn-borrow{background:var(--burgundy);color:var(--cream)}
+  .btn-close{background:#ccc;color:var(--ink)}
+
+  @media(max-width:600px){
+    .hero h1{font-size:2rem}
+    nav ul{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">📚 <span>Jesus Way</span> Library</div>
+  <ul>
+    <li><a href="#catalog">Catalog</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <link rel="stylesheet" href="account.html">
+  <a href="account.html" class="nav-btn">My Account</a>
+</nav>
+
+<section class="hero">
+  <h1>Where Stories Come Alive</h1>
+  <p>Explore over 50,000 titles, attend author talks, and join a community of readers. Your next favorite book is waiting.</p>
+  <div class="search-box">
+    <input type="text" id="heroSearch" placeholder="Search by title, author, or ISBN..." />
+    <button onclick="doSearch()">Search</button>
+  </div>
+</section>
+
+<section>
+  <h2 class="section-title">Browse by Category</h2>
+  <p class="section-subtitle">Find your next adventure in our curated collections</p>
+  <div class="categories">
+    <div class="category" onclick="filterCategory('Fiction')"><div class="icon">📖</div><h3>Fiction</h3><p>12,400 titles</p></div>
+    <div class="category" onclick="filterCategory('Mystery')"><div class="icon">🔍</div><h3>Mystery</h3><p>3,200 titles</p></div>
+    <div class="category" onclick="filterCategory('Science')"><div class="icon">🔬</div><h3>Science</h3><p>5,800 titles</p></div>
+    <div class="category" onclick="filterCategory('History')"><div class="icon">🏛️</div><h3>History</h3><p>4,100 titles</p></div>
+    <div class="category" onclick="filterCategory('Children')"><div class="icon">🧸</div><h3>Children</h3><p>6,500 titles</p></div>
+    <div class="category" onclick="filterCategory('Biography')"><div class="icon">👤</div><h3>Biography</h3><p>2,900 titles</p></div>
+  </div>
+</section>
+
+<section id="catalog">
+  <h2 class="section-title">Featured Books</h2>
+  <p class="section-subtitle">Hand-picked by our librarians this month</p>
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-cat="all">All</button>
+    <button class="filter-btn" data-cat="Fiction">Fiction</button>
+    <button class="filter-btn" data-cat="Mystery">Mystery</button>
+    <button class="filter-btn" data-cat="Science">Science</button>
+    <button class="filter-btn" data-cat="History">History</button>
+    <button class="filter-btn" data-cat="Children">Children</button>
+    <button class="filter-btn" data-cat="Biography">Biography</button>
+  </div>
+  <div class="books" id="booksGrid"></div>
+</section>
+
+<section class="events-section" id="events">
+  <div class="events-wrap">
+    <h2 class="section-title">Upcoming Events</h2>
+    <p class="section-subtitle">Join us for readings, workshops, and community gatherings</p>
+    <div class="events">
+      <div class="event">
+        <div class="event-date">Aug 3 · 6:00 PM</div>
+        <h3>Author Talk: Elena Marquez</h3>
+        <p>Join bestselling author Elena Marquez for a reading from her new novel "The Glass Garden" followed by Q&A.</p>
+      </div>
+      <div class="event">
+        <div class="event-date">Aug 10 · 2:00 PM</div>
+        <h3>Children's Storytime</h3>
+        <p>Weekly storytime for ages 3-7 with crafts and snacks. All welcome — no registration needed.</p>
+      </div>
+      <div class="event">
+        <div class="event-date">Aug 17 · 7:00 PM</div>
+        <h3>Book Club: "Klara and the Sun"</h3>
+        <p>Our monthly book club meets to discuss Kazuo Ishiguro's beautiful novel. New members welcome!</p>
+      </div>
+      <div class="event">
+        <div class="event-date">Aug 24 · 10:00 AM</div>
+        <h3>Digital Literacy Workshop</h3>
+        <p>Learn the basics of using e-readers, library apps, and online research tools. Free for all members.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Become a Member — It's Free!</h2>
+  <p>Borrow up to 10 books at a time, access digital resources, and attend all events.</p>
+  <button onclick="alert('Welcome to Lumina! Your membership form will open shortly.')">Sign Up Today</button>
+</section>
+
+<footer id="contact">
+  <div class="footer-grid">
+    <div>
+      <h4>📚 Lumina Library</h4>
+      <p style="opacity:.85;font-size:.95rem">Serving our community since 1923. A place for readers of all ages.</p>
+    </div>
+    <div>
+      <h4>Visit Us</h4>
+      <ul>
+        <li>📍 142 Maple Street</li>
+        <li>🕐 Mon–Sat: 9am–8pm</li>
+        <li>🕐 Sunday: 11am–5pm</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li>📞 (555) 123-4567</li>
+        <li>✉️ hello@lumina.lib</li>
+        <li>💬 Live chat available</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <ul>
+        <li>Catalog</li>
+        <li>Renew Books</li>
+        <li>Reserve a Room</li>
+        <li>Donate</li>
+      </ul>
+    </div>
+  </div>
+  <div class="copyright">© 2026 Lumina Public Library · Made with 📚 for readers everywhere</div>
+</footer>
+
+<div class="modal" id="bookModal">
+  <div class="modal-content">
+    <div class="modal-cover" id="modalCover"></div>
+    <div class="modal-body">
+      <h2 id="modalTitle"></h2>
+      <div class="author" id="modalAuthor"></div>
+      <p id="modalDesc"></p>
+      <div class="modal-actions">
+        <button class="btn-borrow" id="modalBorrow">Borrow This Book</button>
+        <button class="btn-close" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const books = [
+    {title:"The Midnight Library",author:"Matt Haig",cat:"Fiction",status:"available",color:"linear-gradient(135deg,#2c3e50,#4a6572)",desc:"Between life and death there is a library. A beautiful novel about the choices that make a life worth living."},
+    {title:"Project Hail Mary",author:"Andy Weir",cat:"Science",status:"available",color:"linear-gradient(135deg,#0f2027,#2c5364)",desc:"A lone astronaut must save Earth from disaster in this gripping sci-fi adventure."},
+    {title:"The Silent Patient",author:"Alex Michaelides",cat:"Mystery",status:"borrowed",color:"linear-gradient(135deg,#434343,#000000)",desc:"A woman shoots her husband five times and then never speaks another word."},
+    {title:"Sapiens",author:"Yuval Noah Harari",cat:"History",status:"available",color:"linear-gradient(135deg,#8e2de2,#4a00e0)",desc:"A brief history of humankind that challenges everything we thought we knew."},
+    {title:"The Wild Robot",author:"Peter Brown",cat:"Children",status:"available",color:"linear-gradient(135deg,#56ab2f,#a8e063)",desc:"A robot learns what it means to be alive in the wilderness."},
+    {title:"Becoming",author:"Michelle Obama",cat:"Biography",status:"available",color:"linear-gradient(135deg,#c31432,#240b36)",desc:"The deeply personal memoir of the former First Lady of the United States."},
+    {title:"Klara and the Sun",author:"Kazuo Ishiguro",cat:"Fiction",status:"available",color:"linear-gradient(135deg,#ff9966,#ff5e62)",desc:"An Artificial Friend observes the world and learns about love."},
+    {title:"The Girl with the Dragon Tattoo",author:"Stieg Larsson",cat:"Mystery",status:"available",color:"linear-gradient(135deg,#232526,#414345)",desc:"A journalist and a hacker investigate a decades-old disappearance."},
+    {title:"Cosmos",author:"Carl Sagan",cat:"Science",status:"borrowed",color:"linear-gradient(135deg,#1e3c72,#2a5298)",desc:"A journey through the universe with one of its greatest explainers."},
+    {title:"Where the Wild Things Are",author:"Maurice Sendak",cat:"Children",status:"available",color:"linear-gradient(135deg,#f7971e,#ffd200)",desc:"The beloved classic about a boy who sails to the land of wild things."},
+    {title:"A Brief History of Time",author:"Stephen Hawking",cat:"Science",status:"available",color:"linear-gradient(135deg,#141e30,#243b55)",desc:"The nature of time, the universe, and existence itself."},
+    {title:"The Diary of a Young Girl",author:"Anne Frank",cat:"Biography",status:"available",color:"linear-gradient(135deg,#654ea3,#eaafc8)",desc:"The powerful, enduring diary of a Jewish girl in hiding during WWII."},
+  ];
+
+  const grid = document.getElementById('booksGrid');
+  const modal = document.getElementById('bookModal');
+
+  function renderBooks(list){
+    grid.innerHTML = list.map((b,i)=>`
+      <div class="book" onclick="openModal(${books.indexOf(b)})">
+        <div class="book-cover" style="background:${b.color}">${b.title}</div>
+        <div class="book-info">
+          <h3>${b.title}</h3>
+          <div class="author">by ${b.author}</div>
+          <span class="status ${b.status}">${b.status==='available'?'✓ Available':'⏳ Borrowed'}</span>
+        </div>
+      </div>
+    `).join('');
+    if(list.length===0){
+      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:2rem">No books match your search.</p>';
+    }
+  }
+
+  function openModal(i){
+    const b = books[i];
+    document.getElementById('modalCover').style.background = b.color;
+    document.getElementById('modalCover').textContent = b.title;
+    document.getElementById('modalTitle').textContent = b.title;
+    document.getElementById('modalAuthor').textContent = 'by ' + b.author;
+    document.getElementById('modalDesc').textContent = b.desc;
+    const btn = document.getElementById('modalBorrow');
+    if(b.status==='available'){
+      btn.textContent = 'Borrow This Book';
+      btn.onclick = ()=>{ b.status='borrowed'; renderBooks(currentList()); closeModal(); };
+    } else {
+      btn.textContent = 'Return Book';
+      btn.onclick = ()=>{ b.status='available'; renderBooks(currentList()); closeModal(); };
+    }
+    modal.classList.add('open');
+  }
+  function closeModal(){ modal.classList.remove('open'); }
+  modal.addEventListener('click',e=>{ if(e.target===modal) closeModal(); });
+
+  let currentFilter = 'all';
+  let currentSearch = '';
+  function currentList(){
+    return books.filter(b=>{
+      const matchCat = currentFilter==='all' || b.cat===currentFilter;
+      const q = currentSearch.toLowerCase();
+      const matchSearch = !q || b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q);
+      return matchCat && matchSearch;
+    });
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.cat;
+      renderBooks(currentList());
+    });
+  });
+
+  function filterCategory(cat){
+    currentFilter = cat;
+    document.querySelectorAll('.filter-btn').forEach(b=>{
+      b.classList.toggle('active', b.dataset.cat===cat);
+    });
+    renderBooks(currentList());
+    document.getElementById('catalog').scrollIntoView({behavior:'smooth'});
+  }
+
+  function doSearch(){
+    currentSearch = document.getElementById('heroSearch').value;
+    renderBooks(currentList());
+    document.getElementById('catalog').scrollIntoView({behavior:'smooth'});
+  }
+  document.getElementById('heroSearch').addEventListener('input',e=>{
+    currentSearch = e.target.value;
+    renderBooks(currentList());
+  });
+
+  renderBooks(books);
+</script>
+</body>
+</html>
